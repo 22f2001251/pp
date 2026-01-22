@@ -2,6 +2,7 @@ import requests
 import subprocess
 from datetime import datetime, timezone
 
+# ---------------- CONFIG ----------------
 WEBSITES = {
     "airtel": "https://www.airtel.in",
     "jio": "https://www.jio.com",
@@ -10,10 +11,19 @@ WEBSITES = {
     "paytm": "https://paytm.com"
 }
 
+# ---------------- UTILITY ----------------
 def run(cmd):
+    """
+    Run a shell command.
+    Raises error if command fails.
+    """
     subprocess.run(cmd, shell=True, check=True)
 
+# ---------------- FETCH HEADERS ----------------
 def fetch_headers():
+    """
+    Fetch headers from websites and save to a new file.
+    """
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     filename = f"headers_{timestamp}.txt"
 
@@ -33,8 +43,16 @@ def fetch_headers():
 
     return filename
 
+# ---------------- MAIN ----------------
 if __name__ == "__main__":
+    # Configure Git identity for this repo
+    run('git config user.name "GitHub Actions Bot"')
+    run('git config user.email "actions@github.com"')
+
+    # Fetch headers and get filename
     file_created = fetch_headers()
+
+    # Git commit and push
     run(f"git add {file_created}")
     run(f"git commit -m 'Headers snapshot {file_created}'")
     run("git push")
