@@ -24,5 +24,10 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
+      - name: Configure Git user
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
       - name: Run header fetcher
         run: python fetch_headers.py
